@@ -1,0 +1,38 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Zadanie_domowe.ModelDanych;
+
+namespace Zadanie_domowe.BazaDanych
+{
+    internal class BazaDanychObsluga : DbContext
+    {
+        // Trzeba utworzyc Set dla każdej tabeli w bazie
+        public DbSet<users> users { get; set; }
+
+        public DbSet<addresses> addresses { get; set; }
+
+        public DbSet<test> test { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=dane.db");
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        // To tylko potrzebne w przypadku relacji tabel
+        // Sprawdza klucze obce (można elegancko takie coś Chatem wygenerować)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<users>()
+                .HasOne(u => u.Address)
+                .WithMany(a => a.Users)
+                .HasForeignKey(u => u.address_id);
+
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}
