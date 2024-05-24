@@ -1,0 +1,103 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace cwiczonka_nowe
+{
+    internal class BazaLaczkaRozlaczka
+    {
+        public static SQLiteConnection sql_con;
+        private SQLiteCommand sql_cmd;
+        public static string BAZA_DANYCH_KSIAZKA_NAD_PLIK = "ksiazkaNad.db";
+        public static string BAZA_DANYCH_KSIAZKA_NAD_LACZKA = "Data Source = " + BAZA_DANYCH_KSIAZKA_NAD_PLIK + ";Version=3;New=False;Compress=True";
+
+        public SQLiteCommand Polacz()
+        {
+            try
+            {
+                sql_con = new SQLiteConnection(BAZA_DANYCH_KSIAZKA_NAD_LACZKA);
+                sql_con.Open();
+                sql_cmd = sql_con.CreateCommand();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć sie z bazą danych");
+            }
+            return sql_cmd;
+        }
+
+        public void Rozlacz()
+        {
+            try
+            {
+                sql_con.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć się z bazą danych");
+            }
+        }
+    }
+}
+
+--------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace cwiczonka_nowe
+{
+    internal class BazaDanychSqlSelect
+    {
+        public string wczytajTabeleCala(string nazwaTabeli)
+        {
+            string sqlString = null;
+            sqlString = "SELECT * FROM " + nazwaTabeli + ";";
+            return sqlString;
+        }
+
+        public string wczytaj_1_Pole(string nazwaTabeli, string nazwaPola)
+        {
+            string sqlString = null;
+            sqlString = "SELECT " + nazwaPola + " FROM " + nazwaTabeli + ";";
+            return sqlString;
+        }
+
+        public string wczytaj_2_Pola(string nazwaTabeli, string nazwaPola1, string nazwaPola2)
+        {
+            string sqlString = null;
+            sqlString = "SELECT " + nazwaPola1 + ", " + nazwaPola2 + " FROM " + nazwaTabeli + ";";
+            return sqlString;
+        }
+    }
+}
+
+
+------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace cwiczonka_nowe
+{
+    internal class BazaDanychOpis
+    {
+        #region
+        public static string BAZA_DANYCH_TABELA_MIASTA_SLOWNIK = "MiastaSlownik";
+        public static string MIASTA_SLOWNIK_ID_MIASTA_SLOWNIK = "idMiasta";
+        public static string MIASTA_SLOWNIK_NAZWA_MIASTA = "NazwaMiasta";
+        #endregion
+    }
+}
+
+
